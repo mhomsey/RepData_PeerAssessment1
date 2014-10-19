@@ -25,7 +25,6 @@ The file is not unzipped.
 The data.frame is returned to the caller.  
 ```{r creatfunc2}
 readfromzip <- function() {
-# extract the names line
         data <- read.csv2(unz("./data/monitoring.zip", "activity.csv"), header=T,  stringsAsFactors=F, sep=",")
   data
 }
@@ -45,12 +44,13 @@ Calculate the sum per day of each of the steps taken. (Give the column names a s
 sumbyDay <- aggregate(activity$steps, list(activity$date), sum)
 names(sumbyDay) <- c("date", "totalSteps")
 ```
-Plot the histogram of the steps taken.
+Plot the histogram of the steps taken.  
+histo1:
 ```{r histo1}
 hist(sumbyDay$totalSteps, breaks=30, main="Histogram of the total number of steps taken each day", xlab="Total Steps", col="lightgreen", lwd=2)
 ```
 
-Now calculate the meand and median, ignoring the days with NA values.
+Now calculate the mean and median, ignoring the days with NA values.
 ```{r calcmean}
 meanIgnoreNA <- round(mean(sumbyDay$totalSteps, na.rm=T))
 medianIgnoreNA <- median(sumbyDay$totalSteps, na.rm=T)
@@ -80,8 +80,8 @@ sumbyDay2[is.na(sumbyDay2)] <- meanIgnoreNA
 ```
 sumbyDay2 now contains the same as sumbyDay with the NA months replaced by the mean.  
 
-4. new histogram and mean and median created.
-
+4. new histogram and mean and median created.  
+newhist:
 ```{r newhist}
 hist(sumbyDay2$totalSteps, breaks=30, main="Histogram of the total number of steps taken each day modified NAs", xlab="Total Steps", col="red", lwd=2)
 ```
@@ -101,12 +101,19 @@ The average is unaffected. The median *has* been affected. More points are in th
 1. new factor varibale "weekday" and "weekend".  
 create a new column with the name of the week (using *weekdays*) and use gsub with regular expressions to change this to **weekend** or **weekday**.
 ```{r differences}
+library(ggplot2)
 activity2 <- activity
 activity2$weekday <- weekdays(as.Date(activity2$date))
 activity2$weekday <- gsub("Monday|Tuesday|Wednesday|Thursday|Friday",
                          "weekday", activity2$weekday)
 
 activity2$weekday <- gsub("Saturday|Sunday", "weekend", activity2$weekday)
+j<-aggregate(activity2, by=list(activity2$steps, activity2$weekday), FUN=mean, na.rm=TRUE)
+g<-ggplot(j, aes(x=interval , y=Group.1 ))
+ p <- g + geom_line() + facet_grid(. ~ Group.2) + labs(x="Interval") + labs(y="Number of Steps")
+print(p)
+
+
 ```
 
 
