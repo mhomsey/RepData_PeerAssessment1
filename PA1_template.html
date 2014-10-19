@@ -312,12 +312,16 @@ The average is unaffected. The median <em>has</em> been affected. More points ar
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
 
 <ol>
-<li>create a new column with the name of the week (using <em>weekdays</em>) and use gsub with regular expressions to change this to <strong>weekend</strong> or <strong>weekday</strong>.</li>
+<li>new factor varibale &ldquo;weekday&rdquo; and &ldquo;weekend&rdquo;.<br/>
+create a new column with the name of the week (using <em>weekdays</em>) and use gsub with regular expressions to change this to <strong>weekend</strong> or <strong>weekday</strong>.</li>
 </ol>
 
-<pre><code class="r">sumbyDay2$weekday &lt;- weekdays(as.Date(sumbyDay2$date))
-sumbyDay2$weekday &lt;- gsub(&quot;Monday|Tuesday|Wednesday|Thursday|Friday&quot;, &quot;weekday&quot;, sumbyDay2$weekday)
-sumbyDay2$weekday &lt;- gsub(&quot;Saturday|Sunday&quot;, &quot;weekend&quot;, sumbyDay2$weekday)
+<pre><code class="r">activity2 &lt;- activity
+activity2$weekday &lt;- weekdays(as.Date(activity2$date))
+activity2$weekday &lt;- gsub(&quot;Monday|Tuesday|Wednesday|Thursday|Friday&quot;,
+                         &quot;weekday&quot;, activity2$weekday)
+
+activity2$weekday &lt;- gsub(&quot;Saturday|Sunday&quot;, &quot;weekend&quot;, activity2$weekday)
 </code></pre>
 
 </body>

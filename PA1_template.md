@@ -109,12 +109,16 @@ The average is unaffected. The median *has* been affected. More points are in th
 
 
 ## Are there differences in activity patterns between weekdays and weekends?  
-1. create a new column with the name of the week (using *weekdays*) and use gsub with regular expressions to change this to **weekend** or **weekday**.
+1. new factor varibale "weekday" and "weekend".  
+create a new column with the name of the week (using *weekdays*) and use gsub with regular expressions to change this to **weekend** or **weekday**.
 
 ```r
-sumbyDay2$weekday <- weekdays(as.Date(sumbyDay2$date))
-sumbyDay2$weekday <- gsub("Monday|Tuesday|Wednesday|Thursday|Friday", "weekday", sumbyDay2$weekday)
-sumbyDay2$weekday <- gsub("Saturday|Sunday", "weekend", sumbyDay2$weekday)
+activity2 <- activity
+activity2$weekday <- weekdays(as.Date(activity2$date))
+activity2$weekday <- gsub("Monday|Tuesday|Wednesday|Thursday|Friday",
+                         "weekday", activity2$weekday)
+
+activity2$weekday <- gsub("Saturday|Sunday", "weekend", activity2$weekday)
 ```
 
 
